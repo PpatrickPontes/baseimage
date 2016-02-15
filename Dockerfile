@@ -1,4 +1,4 @@
-
+## imagename aliimage:1.0
 FROM frolvlad/alpine-oraclejdk8:cleaned
 
 #ENV LC_ALL=en_US.UTF-8
@@ -15,11 +15,4 @@ ENV MAVEN_HOME=/opt/alibaba/maven
 ENV MAVEN=$MAVEN_HOME/bin
 ENV PATH=$PATH:$MAVEN_HOME:$MAVEN
 
-##ADD feed.service.server/target/boots.starter.feed.service-1.0.0-SNAPSHOT.jar app.jar
-
 CMD mvn --version
-
-#RUN mvn clean install
-#ADD ./boots.starter.feed.service-1.0.0-SNAPSHOT.jar ./
-#ADD ./boots.sh ./
-#CMD sh boots.sh boots.starter.feed.service-1.0.0-SNAPSHOT.jar
