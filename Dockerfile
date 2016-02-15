@@ -7,7 +7,8 @@ FROM frolvlad/alpine-oraclejdk8:cleaned
 RUN wget http://oam.alicdn.com/tools/apache-maven-3.3.9-bin.tar.gz
 RUN tar -zxvf apache-maven-3.3.9-bin.tar.gz
 RUN rm apache-maven-3.3.9-bin.tar.gz
-RUN mkdir /opt && mkdir /opt/alibaba
+RUN mkdir /opt && mkdir /opt/alibaba && mkdir /root/.m2
+ADD settings.xml /root/.m2/settings.xml
 RUN mv apache-maven-3.3.9 /opt/alibaba/maven
 
 
