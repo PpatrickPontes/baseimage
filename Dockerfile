@@ -5,7 +5,6 @@ FROM frolvlad/alpine-oraclejdk8:cleaned
 
 #RUN apk add --update wget   && rm -rf /var/cache/apk/*
 
-ADD localtime /etc/localtime
 
 
 RUN wget http://oam.alicdn.com/tools/apache-maven-3.3.9-bin.tar.gz
@@ -20,4 +19,7 @@ ENV MAVEN_HOME=/opt/alibaba/maven
 ENV MAVEN=$MAVEN_HOME/bin
 ENV PATH=$PATH:$MAVEN_HOME:$MAVEN
 
+ADD localtime /etc/localtime
+ADD localtime /usr/share/zoneinfo/Asia/Shanghai
+ADD zone /etc/sysconfig/clock
 CMD mvn --version
