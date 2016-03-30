@@ -1,25 +1,25 @@
-## imagename aliimage:1.0
-FROM frolvlad/alpine-oraclejdk8:cleaned
+FROM ubuntu:16.04
 
-#ENV LC_ALL=en_US.UTF-8
-
-#RUN apk add --update wget   && rm -rf /var/cache/apk/*
-
-
-
-RUN wget http://oam.alicdn.com/tools/apache-maven-3.3.9-bin.tar.gz
-RUN tar -zxvf apache-maven-3.3.9-bin.tar.gz
-RUN rm apache-maven-3.3.9-bin.tar.gz
-RUN mkdir /opt && mkdir /opt/alibaba && mkdir /root/.m2
-ADD settings.xml /root/.m2/settings.xml
-RUN mv apache-maven-3.3.9 /opt/alibaba/maven
-
-
-ENV MAVEN_HOME=/opt/alibaba/maven
-ENV MAVEN=$MAVEN_HOME/bin
-ENV PATH=$PATH:$MAVEN_HOME:$MAVEN
 
 ADD localtime /etc/localtime
 ADD localtime /usr/share/zoneinfo/Asia/Shanghai
 ADD zone /etc/sysconfig/clock
-CMD mvn --version
+
+ADD jdk1.8.0_77 /opt/alibaba/java8
+ADD tengine /opt/alibaba/tengine
+ADD nodejs /opt/alibaba/nodejs
+
+RUN ln -s /lib/x86_64-linux-gnu/libcrypto.so.1.0.0 /lib/x86_64-linux-gnu/libcrypto.so.6 && ln -s /lib/x86_64-linux-gnu/libssl.so.1.0.0 /lib/x86_64-linux-gnu/libssl.so.6
+
+ENV JAVA_HOME=/opt/alibaba/java8
+ENV JAVA8=$JAVA_HOME/bin
+ENV NODE_HOME=/opt/alibaba/nodejs
+ENV NODE=$NODE_HOME/bin
+ENV TENGINE_HOME=/opt/alibaba/tengine
+
+
+ENV PATH=$PATH:$NODE:$JAVA8:$TENGINE_HOME/sbin
+
+
+
+

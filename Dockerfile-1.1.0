@@ -1,0 +1,89 @@
+## imagename aliimage:1.0
+FROM ubuntu:16.04
+
+
+#RUN apk update
+#RUN apk add build-base
+
+
+ADD localtime /etc/localtime
+ADD localtime /usr/share/zoneinfo/Asia/Shanghai
+ADD zone /etc/sysconfig/clock
+
+RUN apt-get install wget -y
+
+## 处理maven
+RUN wget http://oam.alicdn.com/tools/apache-maven-3.3.9-bin.tar.gz
+RUN tar -zxvf apache-maven-3.3.9-bin.tar.gz
+RUN rm apache-maven-3.3.9-bin.tar.gz
+RUN mkdir /opt/alibaba && mkdir /root/.m2
+ADD settings.xml /root/.m2/settings.xml
+RUN mv apache-maven-3.3.9 /opt/alibaba/maven
+
+## 处理node
+RUN wget http://npm.taobao.org/mirrors/node/v5.9.1/node-v5.9.1-linux-x64.tar.gz
+RUN tar -zxvf node-v5.9.1-linux-x64.tar.gz
+RUN rm node-v5.9.1-linux-x64.tar.gz
+RUN mv node-v5.9.1-linux-x64 /opt/alibaba/nodejs
+
+ENV MAVEN_HOME=/opt/alibaba/maven
+ENV MAVEN=$MAVEN_HOME/bin
+ENV NODE_HOME=/opt/alibaba/nodejs
+ENV NODE=$NODE_HOME/bin
+
+ENV PATH=$PATH:$MAVEN_HOME:$MAVEN:$NODE
+
+
+#RUN npm install -g cnpm --registry=https://registry.npm.taobao.org
+RUN npm install -g webpack
+
+
+RUN wget http://tengine.taobao.org/download/tengine-2.1.2.tar.gz
+RUN tar -zxvf tengine-2.1.2.tar.gz
+RUN rm tengine-2.1.2.tar.gz
+RUN mv tengine-2.1.2 /opt/alibaba/tengine-install && mkdir /opt/alibaba/tengine
+
+RUN wget ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.38.tar.gz
+RUN wget http://zlib.net/zlib-1.2.8.tar.gz
+RUN wget http://openssl.org/source/openssl-1.0.1s.tar.gz
+RUN wget http://downloads.activestate.com/ActivePerl/releases/5.22.1.2201/ActivePerl-5.22.1.2201-x86_64-linux-glibc-2.15-299574.tar.gz
+
+RUN tar -zxvf ActivePerl-5.22.1.2201-x86_64-linux-glibc-2.15-299574.tar.gz && rm ActivePerl-5.22.1.2201-x86_64-linux-glibc-2.15-299574.tar.gz 
+
+RUN cd /ActivePerl-5.22.1.2201-x86_64-linux-glibc-2.15-299574 && ./install.sh --no-manifest-check --license-accepted --no-install-html --prefix=/opt/alibaba/perl 
+
+RUN rm -rf /ActivePerl-5.22.1.2201-x86_64-linux-glibc-2.15-299574
+
+
+RUN tar -zxvf zlib-1.2.8.tar.gz && tar -zxvf pcre-8.38.tar.gz && tar -zxvf openssl-1.0.1s.tar.gz && rm zlib-1.2.8.tar.gz && rm pcre-8.38.tar.gz && rm openssl-1.0.1s.tar.gz
+#RUN cd /zlib-1.2.8 && ./configure --prefix=/opt/alibaba/zlib && make && make install && cd .. && rm -rf zlib-1.2.8
+
+#RUN cd /pcre-8.38 && ./configure --prefix=/opt/alibaba/pcre && make && make install && cd .. && rm -rf pcre-8.38
+
+ENV PATH=$PATH:/opt/alibaba/perl/bin:/opt/alibaba/pcre/bin
+
+#RUN cd /openssl-1.0.1s && ./config --prefix=/opt/alibaba/openssl  && make && make install && cd .. && rm -rf openssl-1.0.1s
+
+RUN apt-get update
+
+RUN apt-get -y install gcc 
+
+RUN apt-get -y install  mono-mcs
+
+
+RUN cd /opt/alibaba/tengine-install && sh configure --prefix=/opt/alibaba/tengine --with-pcre=/pcre-8.38 --with-openssl=/openssl-1.0.1s --with-zlib=/zlib-1.2.8 && make && make install
+
+RUN rm -rf /zlib-1.2.8 /pcre-8.38 /openssl-1.0.1s
+
+
+ENV PATH=$PATH:/opt/alibaba/tengine/bin
+
+
+RUN apt-get install -y openjdk-8-jdk
+
+##RUN rm -rf /var/cache/apk/*
+
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+CMD mvn --version
+
