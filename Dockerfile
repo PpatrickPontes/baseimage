@@ -1,6 +1,6 @@
-FROM ubuntu:16.04
+FROM ubuntu:14.04
 
-
+ADD sources.list /etc/apt/sources.list
 ADD localtime /etc/localtime
 ADD localtime /usr/share/zoneinfo/Asia/Shanghai
 ADD zone /etc/sysconfig/clock
@@ -19,6 +19,18 @@ ENV TENGINE_HOME=/opt/alibaba/tengine
 
 
 ENV PATH=$PATH:$NODE:$JAVA8:$TENGINE_HOME/sbin
+
+ENV NODE_PATH=$NODE_HOME/lib/node_modules
+
+ADD package.json /root/package.json 
+
+RUN cd /root && npm install
+
+#RUN apt-get update && apt-get install python -y
+
+
+
+
 
 
 
