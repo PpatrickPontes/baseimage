@@ -26,6 +26,8 @@ ADD package.json /root/package.json
 
 RUN cd /root && npm install
 
+ENV TZ=CST-8
+
 #RUN apt-get update && apt-get install python -y
 
 
