@@ -23,7 +23,7 @@ ENV NODE_PATH=$NODE_HOME/lib/node_modules
 
 ADD package.json /root/package.json 
 
-RUN cd /root && npm install
+RUN cd /root && npm install --registry=https://registry.npm.taobao.org
 
 
 #RUN apt-get update && apt-get install python -y
