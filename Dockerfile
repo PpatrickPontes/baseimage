@@ -1,9 +1,8 @@
 FROM ubuntu:14.04
 
 ADD sources.list /etc/apt/sources.list
-ADD localtime /etc/localtime
-ADD localtime /usr/share/zoneinfo/Asia/Shanghai
-ADD zone /etc/sysconfig/clock
+ENV TZ=CST-8
+
 
 ADD jdk1.8.0_77 /opt/alibaba/java8
 ADD tengine /opt/alibaba/tengine
@@ -26,7 +25,6 @@ ADD package.json /root/package.json
 
 RUN cd /root && npm install
 
-ENV TZ=CST-8
 
 #RUN apt-get update && apt-get install python -y
 

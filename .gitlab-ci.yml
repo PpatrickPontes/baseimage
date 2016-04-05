@@ -1,17 +1,12 @@
 variables:
   docker: "docker -H tcp://127.0.0.1:4243"
   docker_swarm: "docker -H tcp://10.218.77.36:3376"
-  version: "1.2.0"
 
 stages:
   - build
-  - build_vpc  
-  - build_xyl
 
 before_script:
-  - image=reg.docker.alibaba-inc.com/aliimage:$version
-  - image_vpc=registry.aliyuncs.com/1688cloud/aliimage:$version
-  - image_xyl=139.196.98.151:5000/registry/aliimage:$version
+  - image=reg.docker.alibaba-inc.com/aliimage:1.2.7
   - hostname -i
   - whoami
 
@@ -20,7 +15,6 @@ build_image:
   script:
     - echo $image
     - if [ "`$docker images -q $image`" ]; then $docker rmi $($docker images -q $image); fi
-    - mvn  package
     - echo "Build Docker Image..."
     - $docker build --no-cache -t $image .
     - echo "Push Docker Image to repository..."  
@@ -28,31 +22,4 @@ build_image:
     - echo "Fetch Docker Image to dockeryard..."  
     - $docker_swarm pull $image
   only:
-    - docker-build
-
-build_vpc_image:
-  stage: build_vpc
-  script:
-    - echo $image_vpc
-    - if [ "`$docker images -q $image_vpc`" ]; then $docker rmi -f $($docker images -q $image_vpc); fi
-    - mvn  package
-    - echo "Build Docker Image..."
-    - $docker build --no-cache -t $image_vpc .
-    - echo "Push Docker Image to repository..."  
-    - $docker push $image_vpc
-  only:
-    - docker-build-vpc      
-
-build_xyl_image:
-  stage: build_xyl
-  script:
-    - echo $image_xyl
-    - if [ "`$docker images -q $image_xyl`" ]; then $docker rmi -f $($docker images -q $image_xyl); fi
-    - mvn  package
-    - echo "Build Docker Image..."
-    - $docker build --no-cache -t $image_xyl .
-    - echo "Push Docker Image to repository..."  
-    - $docker push $image_xyl
-  only:
-    - docker-build-xyl
-
+    - master
