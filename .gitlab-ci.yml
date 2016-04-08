@@ -6,7 +6,7 @@ stages:
   - build
 
 before_script:
-  - image=reg.docker.alibaba-inc.com/aliimage:1.2.7
+  - image=reg.docker.alibaba-inc.com/aliimage:1.2.8
   - hostname -i
   - whoami
 
