@@ -47,7 +47,7 @@ NGX_DSO_PATH=modules/
 NGX_AUTOCONF_ERR=autoconf.err
 NGX_AUTOTEST=autotest
 NGX_AUTO_CONFIG_H='objs/ngx_shared_config.h'
-NGX_CONFIGURE=" --prefix=/opt/alibaba/tengine --with-pcre=/pcre-8.38 --with-openssl=/openssl-1.0.1s --with-zlib=/zlib-1.2.8"
+NGX_CONFIGURE=" --prefix=/opt/alibaba/tengine --with-pcre=/pcre-8.38 --with-openssl=/openssl-1.0.1s --with-zlib=/zlib-1.2.8 --with-http_concat_module"
 ngx_feature_file='
 # Copyright (C) Igor Sysoev
 # Copyright (C) Nginx, Inc.

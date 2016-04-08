@@ -1,4 +1,4 @@
-#define NGX_CONFIGURE " --prefix=/opt/alibaba/tengine --with-pcre=/pcre-8.38 --with-openssl=/openssl-1.0.1s --with-zlib=/zlib-1.2.8"
+#define NGX_CONFIGURE " --prefix=/opt/alibaba/tengine --with-pcre=/pcre-8.38 --with-openssl=/openssl-1.0.1s --with-zlib=/zlib-1.2.8 --with-http_concat_module"
 
 #ifndef NGX_SYSLOG
 #define NGX_SYSLOG  1
